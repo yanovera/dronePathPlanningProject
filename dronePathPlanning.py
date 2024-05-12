@@ -128,9 +128,9 @@ def generate_rrt_star(height_map, max_altitude, num_nodes, start, spheres, targe
         new_node = generate_new_node(nodes[nearest_node_index], random_point)
 
         if collision_free(nodes[nearest_node_index], new_node, height_map, height_margin):
-            nodes, parents, costs = add_point_to_rrt_star(height_map, max_altitude, nodes, parents, costs, new_node, spheres, height_margin)
+            nodes, parents, costs = add_point_to_rrt_star(height_map, nodes, parents, costs, new_node, spheres, height_margin)
 
-    add_point_to_rrt_star(height_map, max_altitude, nodes, parents, costs, np.array(target), spheres, height_margin)
+    add_point_to_rrt_star(height_map, nodes, parents, costs, np.array(target), spheres, height_margin)
     return nodes, parents, costs
 
 
@@ -184,9 +184,8 @@ height_map = dataset.read(1)[start_row:end_row, start_col:end_col]
 # Close the dataset
 dataset.close()
 
-# Let's test the function with some example parameters
-max_altitude = MAX_ALTITUDE  # an arbitrary maximum altitude
-num_nodes = NUM_NODES  # an arbitrary resolution
+max_altitude = MAX_ALTITUDE  # set maximum altitude
+num_nodes = NUM_NODES  # set resolution
 
 number_of_spheres = NUMBER_OF_OBSTACLES  # Number of spheres
 
@@ -194,7 +193,6 @@ spheres = [Sphere(center=sample_point(height_map, max_altitude, min_altitude=OBS
 
 # Redefine the starting point and generate the RRT* tree
 start = DRONE_START  # an arbitrary starting position
-# Let's test the function with an arbitrary target point
 target = DRONE_TARGET  # an arbitrary target point
 
 movement_noise_sigma = DRONE_NOISE_SIGMA
