@@ -91,17 +91,18 @@ def generate_new_node(nearest_node, point):
     return nearest_node + direction * step_size
 
 
-
 def generate_random_node(height_map):
     x = np.random.uniform(0, height_map.shape[1] - 1)
     y = np.random.uniform(0, height_map.shape[0] - 1)
     z = np.random.uniform(0, np.max(height_map))
     return [x, y, z]
 
+
 def find_nearest_node(nodes, new_node):
     tree = KDTree(nodes)
     dist, ind = tree.query([new_node])
     return ind[0]
+
 
 def steer_towards(nearest_node, random_node, max_dist):
     vector = np.array(random_node) - np.array(nearest_node)
@@ -115,6 +116,7 @@ def steer_towards(nearest_node, random_node, max_dist):
 def within_bounds(node, height_map):
     x, y, z = node
     return 0 <= x < height_map.shape[1] and 0 <= y < height_map.shape[0] and 0 <= z <= np.max(height_map)
+
 
 def near_nodes(nodes, new_node, num_nodes=100):
     # Get the distance to the new node for each node
@@ -137,6 +139,7 @@ def collision_free(node1, node2, height_map, height_margin):
             return False
     # If none of the points on the line are below the height map, return True
     return True
+
 
 def bresenham_line(node1, node2, tolerance=0.5):
     x1, y1, z1 = [int(round(coord)) for coord in node1]

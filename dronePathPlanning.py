@@ -10,6 +10,7 @@ from objects import Sphere
 from utils import find_nearest_node, generate_new_node, collision_free, add_point_to_rrt_star
 from parameters import *
 
+
 def sample_point(height_map, max_altitude, min_altitude=0):
     x = np.random.uniform(0, height_map.shape[1])
     y = np.random.uniform(0, height_map.shape[0])
