@@ -45,17 +45,19 @@ def update(ev):
         - path_scatter, path: Used to visualize the path.
         - t: The current time step.
         - height_map, max_altitude: Used to generate random points and check the drone's altitude.
+        - drone_speed_factor: The drone's speed factor
         - nodes, parents, costs: Used in the RRT* algorithm.
         - spheres: The moving obstacles.
+        - spheres: The spheres' speed factor.
         - target, start: The start and target points for the drone.
         - current_pos, current_point: The drone's current position.
         - timer: The timer event that triggers the function.
-        - movement_noise_sigma: The standard deviation of the movement noise.
+        - steering_noise_sigma: The standard deviation of the steering noise.
         - tolerance: The distance tolerance for reaching a waypoint or the target.
         - height_margin: The minimum altitude margin above the terrain.
         """
-    global path_scatter, path, t, height_map, max_altitude, nodes, parents, costs, spheres, target, start,\
-        current_pos, current_point, timer, movement_noise_sigma, tolerance, height_margin
+    global path_scatter, path, t, height_map, max_altitude, drone_speed_factor, nodes, parents, costs, spheres, spheres_speed_factor, target, start,\
+        current_pos, current_point, timer, steering_noise_sigma, tolerance, height_margin
     t += 1.0
     if current_pos[2] < height_map[int(current_pos[0]), int(current_pos[1])] + height_margin:
         print(f'warning: drone is below height margin at t={t}.')
@@ -81,9 +83,9 @@ def update(ev):
             waypoint = path[2]
             path = path[1:]
 
-        movement_noise = np.random.normal(scale=movement_noise_sigma, size=3)
+        steering_noise = np.random.normal(scale=steering_noise_sigma, size=3)
         current_direction = (waypoint - current_pos) / np.linalg.norm(waypoint - current_pos)
-        current_pos = current_pos + current_direction * 0.1 + movement_noise
+        current_pos = current_pos + current_direction * drone_speed_factor + steering_noise
 
         current_point.set_data(pos=np.array([current_pos]), edge_color='blue', face_color='blue', size=10)
         if (current_pos[0] < 0 or current_pos[1] < 0 or current_pos[0] >= height_map.shape[1] or current_pos[1] >= height_map.shape[0]):
@@ -95,7 +97,7 @@ def update(ev):
 
     for sphere in spheres:
         sphere_direction = sphere.destination - sphere.center
-        sphere.update_center(sphere.center + sphere_direction * 0.001)
+        sphere.update_center(sphere.center + sphere_direction * spheres_speed_factor)
 
 
 def generate_rrt_star(height_map, max_altitude, num_nodes, start, spheres, target, height_margin):
@@ -188,16 +190,17 @@ max_altitude = MAX_ALTITUDE  # set maximum altitude
 num_nodes = NUM_NODES  # set resolution
 
 number_of_spheres = NUMBER_OF_OBSTACLES  # Number of spheres
-
+spheres_speed_factor = OBSTACLES_SPEED_FACTOR
 spheres = [Sphere(center=sample_point(height_map, max_altitude, min_altitude=OBSTACLES_MIN_ALTITUDE), radius=OBSTACLES_RADIUS, penalty_factor=OBSTACLES_PENALTY_FACTOR, min_altitude=OBSTACLES_MIN_ALTITUDE) for _ in range(number_of_spheres)]
 
 # Redefine the starting point and generate the RRT* tree
 start = DRONE_START  # an arbitrary starting position
 target = DRONE_TARGET  # an arbitrary target point
 
-movement_noise_sigma = DRONE_NOISE_SIGMA
+steering_noise_sigma = DRONE_STEERING_NOISE_SIGMA
 height_margin = MAP_HEIGHT_MARGIN
 tolerance = TARGET_TOLERANCE
+drone_speed_factor = DRONE_SPEED_FACTOR
 
 canvas = scene.SceneCanvas(keys='interactive', show=True)
 view = canvas.central_widget.add_view()
