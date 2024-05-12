@@ -5,7 +5,7 @@ from vispy.scene import visuals
 
 
 class Sphere:
-    def __init__(self, center, radius, penalty_factor, min_altitude):
+    def __init__(self, center, radius, visual_radius, penalty_factor, min_altitude):
         # Initialize the center of the sphere
         self.center = np.empty(3)
         # Set the radius of the sphere
@@ -13,7 +13,7 @@ class Sphere:
         # Set the penalty factor for the sphere
         self.penalty_factor = penalty_factor
         # Create a visual representation of the sphere
-        self.visual = visuals.Sphere(radius=self.radius, method='latitude',
+        self.visual = visuals.Sphere(radius=visual_radius, method='latitude',
                                      color=(0.5, 0.5, 1, 0.8))
         # Update the center of the sphere
         self.update_center(center)

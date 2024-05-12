@@ -191,7 +191,7 @@ num_nodes = NUM_NODES  # set resolution
 
 number_of_spheres = NUMBER_OF_OBSTACLES  # Number of spheres
 spheres_speed_factor = OBSTACLES_SPEED_FACTOR
-spheres = [Sphere(center=sample_point(height_map, max_altitude, min_altitude=OBSTACLES_MIN_ALTITUDE), radius=OBSTACLES_RADIUS, penalty_factor=OBSTACLES_PENALTY_FACTOR, min_altitude=OBSTACLES_MIN_ALTITUDE) for _ in range(number_of_spheres)]
+spheres = [Sphere(center=sample_point(height_map, max_altitude, min_altitude=OBSTACLES_MIN_ALTITUDE), radius=OBSTACLES_SAFETY_RADIUS, visual_radius=OBSTACLES_VISUAL_RADIUS, penalty_factor=OBSTACLES_PENALTY_FACTOR, min_altitude=OBSTACLES_MIN_ALTITUDE) for _ in range(number_of_spheres)]
 
 # Redefine the starting point and generate the RRT* tree
 start = DRONE_START  # an arbitrary starting position
