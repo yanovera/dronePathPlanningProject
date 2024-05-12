@@ -12,6 +12,20 @@ from parameters import *
 
 
 def sample_point(height_map, max_altitude, min_altitude=0):
+    """
+    Generates a random point in a 3D space within the given ranges.
+
+    Args:
+        height_map (np.array): A 2D numpy array representing the terrain over which the drone is flying.
+        max_altitude (float): The maximum altitude at which the drone can fly.
+        min_altitude (float, optional): The minimum altitude at which the drone can fly. Defaults to 0.
+
+    Returns:
+        np.array: A numpy array containing the x, y, and z coordinates of the generated point.
+
+    The function uses a uniform random distribution to generate a 3D point (x, y, z).
+    The x and y coordinates are determined by the dimensions of the height_map, and the z coordinate (altitude) is a random value between min_altitude and max_altitude.
+    """
     x = np.random.uniform(0, height_map.shape[1])
     y = np.random.uniform(0, height_map.shape[0])
     z = np.random.uniform(min_altitude, max_altitude)
@@ -19,6 +33,27 @@ def sample_point(height_map, max_altitude, min_altitude=0):
 
 
 def update(ev):
+    """
+        Updates the drone's position and the pathfinding algorithm at each time step.
+
+        Args:
+            ev: An event trigger for the function. This is typically a timer event that triggers the function at regular intervals.
+
+        This function is called at regular intervals to simulate the drone's movement and update the pathfinding algorithm. It checks the drone's altitude and position, updates the destination of the obstacles (spheres), generates a new RRT* tree and finds a new path if necessary, moves the drone towards the next waypoint on the path, and checks if the drone has reached the target or gone out of bounds.
+
+        The function uses several global variables:
+        - path_scatter, path: Used to visualize the path.
+        - t: The current time step.
+        - height_map, max_altitude: Used to generate random points and check the drone's altitude.
+        - nodes, parents, costs: Used in the RRT* algorithm.
+        - spheres: The moving obstacles.
+        - target, start: The start and target points for the drone.
+        - current_pos, current_point: The drone's current position.
+        - timer: The timer event that triggers the function.
+        - movement_noise_sigma: The standard deviation of the movement noise.
+        - tolerance: The distance tolerance for reaching a waypoint or the target.
+        - height_margin: The minimum altitude margin above the terrain.
+        """
     global path_scatter, path, t, height_map, max_altitude, nodes, parents, costs, spheres, target, start,\
         current_pos, current_point, timer, movement_noise_sigma, tolerance, height_margin
     t += 1.0
@@ -64,6 +99,25 @@ def update(ev):
 
 
 def generate_rrt_star(height_map, max_altitude, num_nodes, start, spheres, target, height_margin):
+    """
+    Generates an RRT* tree for pathfinding in a 3D space.
+
+    Args:
+        height_map (np.array): A 2D numpy array representing the terrain over which the drone is flying.
+        max_altitude (float): The maximum altitude at which the drone can fly.
+        num_nodes (int): The number of nodes to generate for the RRT* tree.
+        start (list): The starting point for the drone, represented as a list of three coordinates [x, y, z].
+        spheres (list): A list of Sphere objects representing moving obstacles in the 3D space.
+        target (list): The target point for the drone, represented as a list of three coordinates [x, y, z].
+        height_margin (float): The minimum altitude margin above the terrain.
+
+    Returns:
+        nodes (list): A list of nodes in the RRT* tree. Each node is a numpy array of three coordinates [x, y, z].
+        parents (list): A list of indices representing the parent node of each node in the 'nodes' list.
+        costs (list): A list of costs associated with each node, representing the cost of the path from the start to that node.
+
+    The function generates an RRT* tree by adding nodes one by one. Each node is a random point in the 3D space, and the function checks if the path from the nearest existing node to the new node is collision-free before adding the new node. The function also updates the parent and cost of each node as it is added. The function continues adding nodes until it has added the specified number of nodes, and then it adds the target point as the final node.
+    """
     nodes = [np.array(start)]
     parents = [-1]  # the parent index of the start node is -1
     costs = [0]
@@ -81,6 +135,19 @@ def generate_rrt_star(height_map, max_altitude, num_nodes, start, spheres, targe
 
 
 def find_path(nodes, parents, target):
+    """
+    Finds the shortest path from the start to the target in an RRT* tree.
+
+    Args:
+        nodes (list): A list of nodes in the RRT* tree. Each node is a numpy array of three coordinates [x, y, z].
+        parents (list): A list of indices representing the parent node of each node in the 'nodes' list.
+        target (list): The target point for the drone, represented as a list of three coordinates [x, y, z].
+
+    Returns:
+        np.array: A numpy array of nodes representing the shortest path from the start to the target.
+
+    The function computes the Euclidean distance from the target to all nodes in the RRT* tree, and finds the node that is closest to the target. It then traces back from this node to the start through the parent nodes, creating a path. The path is reversed to obtain a path from the start to the target.
+    """
     # Compute the distance from the target to all nodes
     distances = cdist([target], nodes, 'euclidean')[0]
 
