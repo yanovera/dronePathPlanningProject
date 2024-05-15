@@ -248,7 +248,7 @@ def get_height_map(x, y, height_map, height_margin):
                ) + height_margin
 
 
-def bresenham_line(node1, node2, tolerance=1):
+def bresenham_line(node1, node2, tolerance=0.8):
     """
     Generates a line between two nodes in a 3D space using the Bresenham's line algorithm.
 

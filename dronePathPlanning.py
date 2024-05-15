@@ -97,6 +97,8 @@ def update(ev):
 
     for sphere in spheres:
         sphere_direction = sphere.destination - sphere.center
+        if sphere.is_point_inside(current_pos):
+            print(f'warning: drone hit obstacle {sphere.id} at t={t}.')
         sphere.update_center(sphere.center + sphere_direction * spheres_speed_factor)
 
 
@@ -192,7 +194,7 @@ num_nodes = NUM_NODES  # set resolution
 
 number_of_spheres = NUMBER_OF_OBSTACLES  # Number of spheres
 spheres_speed_factor = OBSTACLES_SPEED_FACTOR
-spheres = [Sphere(center=sample_point(height_map, max_altitude, min_altitude=OBSTACLES_MIN_ALTITUDE), radius=OBSTACLES_SAFETY_RADIUS, visual_radius=OBSTACLES_VISUAL_RADIUS, penalty_factor=OBSTACLES_PENALTY_FACTOR, min_altitude=OBSTACLES_MIN_ALTITUDE) for _ in range(number_of_spheres)]
+spheres = [Sphere(center=sample_point(height_map, max_altitude, min_altitude=OBSTACLES_MIN_ALTITUDE), radius=OBSTACLES_SAFETY_RADIUS, visual_radius=OBSTACLES_VISUAL_RADIUS, penalty_factor=OBSTACLES_PENALTY_FACTOR, min_altitude=OBSTACLES_MIN_ALTITUDE, id=i) for i in range(number_of_spheres)]
 
 # Redefine the starting point and generate the RRT* tree
 start = np.array(DRONE_START) - np.array([X_MIN, Y_MIN, 0])  # an arbitrary starting position
