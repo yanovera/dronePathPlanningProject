@@ -97,9 +97,9 @@ def update(ev):
 
     for sphere in spheres:
         sphere_direction = sphere.destination - sphere.center
+        sphere.update_center(sphere.center + sphere_direction * spheres_speed_factor)
         if sphere.is_point_inside(current_pos):
             print(f'warning: drone hit obstacle {sphere.id} at t={t}.')
-        sphere.update_center(sphere.center + sphere_direction * spheres_speed_factor)
 
 
 def generate_rrt_star(height_map, max_altitude, num_nodes, start, spheres, target, height_margin):
