@@ -88,7 +88,7 @@ def update(ev):
         current_pos = current_pos + current_direction * drone_speed_factor + steering_noise
 
         current_point.set_data(pos=np.array([current_pos]), edge_color='blue', face_color='blue', size=10)
-        if (current_pos[0] < 0 or current_pos[1] < 0 or current_pos[0] >= height_map.shape[1] or current_pos[1] >= height_map.shape[0]):
+        if (current_pos[0] < 0 or current_pos[1] < 0 or current_pos[0] >= height_map.shape[0] or current_pos[1] >= height_map.shape[1]):
             print(f'drone went out of bounds at t={t}.')
             timer.stop()
         if (current_pos[2] < height_map[int(current_pos[0]), int(current_pos[1])]):
@@ -195,8 +195,8 @@ spheres_speed_factor = OBSTACLES_SPEED_FACTOR
 spheres = [Sphere(center=sample_point(height_map, max_altitude, min_altitude=OBSTACLES_MIN_ALTITUDE), radius=OBSTACLES_SAFETY_RADIUS, visual_radius=OBSTACLES_VISUAL_RADIUS, penalty_factor=OBSTACLES_PENALTY_FACTOR, min_altitude=OBSTACLES_MIN_ALTITUDE) for _ in range(number_of_spheres)]
 
 # Redefine the starting point and generate the RRT* tree
-start = DRONE_START  # an arbitrary starting position
-target = DRONE_TARGET  # an arbitrary target point
+start = np.array(DRONE_START) - np.array([X_MIN, Y_MIN, 0])  # an arbitrary starting position
+target = np.array(DRONE_TARGET) - np.array([X_MIN, Y_MIN, 0])  # an arbitrary target point
 
 steering_noise_sigma = DRONE_STEERING_NOISE_SIGMA
 height_margin = MAP_HEIGHT_MARGIN
