@@ -237,13 +237,13 @@ def collision_free(node1, node2, height_map, height_margin):
 
 def get_height_map(x, y, height_map, height_margin):
     return max(height_map[int(x), int(y)],
-               height_map[int(x + 1), int(y)] if x < height_map.shape[0] else 0,
+               height_map[int(x + 1), int(y)] if x < height_map.shape[0] - 1 else 0,
                height_map[int(x - 1), int(y)] if x > 0 else 0,
-               height_map[int(x), int(y + 1)] if y < height_map.shape[1] else 0,
-               height_map[int(x + 1), int(y + 1)] if x < height_map.shape[0] and y < height_map.shape[1] else 0,
-               height_map[int(x - 1), int(y + 1)] if x > 0 and y < height_map.shape[1] else 0,
+               height_map[int(x), int(y + 1)] if y < height_map.shape[1] - 1 else 0,
+               height_map[int(x + 1), int(y + 1)] if x < height_map.shape[0] - 1 and y < height_map.shape[1] - 1 else 0,
+               height_map[int(x - 1), int(y + 1)] if x > 0 and y < height_map.shape[1] - 1 else 0,
                height_map[int(x), int(y - 1)] if y > 0 else 0,
-               height_map[int(x + 1), int(y - 1)] if x < height_map.shape[0] and y > 0 else 0,
+               height_map[int(x + 1), int(y - 1)] if x < height_map.shape[0] - 1 and y > 0 else 0,
                height_map[int(x - 1), int(y - 1)] if x > 0 and y > 0 else 0,
                ) + height_margin
 
