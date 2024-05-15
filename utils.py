@@ -229,10 +229,23 @@ def collision_free(node1, node2, height_map, height_margin):
     for point in line_points:
         x, y, z = point
         # If the point is out of bounds of the height map or below the height map, return False
-        if x < 0 or y < 0 or x >= height_map.shape[1] or y >= height_map.shape[0] or z < height_map[int(y), int(x)] + height_margin:
+        if x < 0 or y < 0 or x >= height_map.shape[0] or y >= height_map.shape[1] or z < get_height_map(x, y, height_map, height_margin):
             return False
     # If none of the points on the line are below the height map, return True
     return True
+
+
+def get_height_map(x, y, height_map, height_margin):
+    return max(height_map[int(x), int(y)],
+               height_map[int(x + 1), int(y)] if x < height_map.shape[0] else 0,
+               height_map[int(x - 1), int(y)] if x > 0 else 0,
+               height_map[int(x), int(y + 1)] if y < height_map.shape[1] else 0,
+               height_map[int(x + 1), int(y + 1)] if x < height_map.shape[0] and y < height_map.shape[1] else 0,
+               height_map[int(x - 1), int(y + 1)] if x > 0 and y < height_map.shape[1] else 0,
+               height_map[int(x), int(y - 1)] if y > 0 else 0,
+               height_map[int(x + 1), int(y - 1)] if x < height_map.shape[0] and y > 0 else 0,
+               height_map[int(x - 1), int(y - 1)] if x > 0 and y > 0 else 0,
+               ) + height_margin
 
 
 def bresenham_line(node1, node2, tolerance=0.5):
