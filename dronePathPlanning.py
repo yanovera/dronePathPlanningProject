@@ -135,7 +135,7 @@ def generate_rrt_star(height_map, max_altitude, num_nodes, start, spheres, targe
             nodes, parents, costs = add_point_to_rrt_star(height_map, nodes, parents, costs, new_node, spheres, height_margin)
 
     # Always add the target to the RRT* tree
-    add_point_to_rrt_star(height_map, nodes, parents, costs, np.array(target), spheres, height_margin=0)
+    add_point_to_rrt_star(height_map, nodes, parents, costs, np.array(target), spheres, height_margin)
     return nodes, parents, costs
 
 
