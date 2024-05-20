@@ -31,13 +31,11 @@ The script allows for several parameters to be adjusted:
 - `DRONE_START`, `DRONE_TARGET`, `DRONE_SPEED_FACTOR`, `DRONE_STEERING_NOISE_SIGMA`, `TARGET_TOLERANCE`: Parameters related to the drone's start and target positions, speed, steering noise, and target tolerance.
 
 ## 3D Visualization
-
-The script includes a 3D visualization of the drone's flight path, the terrain, and the obstacles. The visualization shows the drone's current position, the target position, and the optimal path as determined by the RRT* algorithm. The terrain is rendered based on the height map, and the obstacles are shown as spheres with radii equal to their safety radii.
-
-The 3D visualization provides a clear and intuitive way to understand the drone's flight path and the challenges posed by the terrain and obstacles.
+The script uses the `vispy` package to create a 3D visualization of the drone's flight path, the terrain, and the obstacles. The visualization shows the drone's current position, the target position, and the optimal path as determined by the RRT* algorithm. The terrain is rendered based on the height map, and the obstacles are shown as spheres with radii equal to their safety radii.
 
 ## Algorithmic Background
 
 The script uses the RRT* algorithm for pathfinding. RRT* is a graph-based planning algorithm designed to efficiently search nonconvex, high-dimensional spaces by randomly building a space-filling tree. The tree is constructed incrementally from samples drawn randomly from the search space and is inherently biased to grow towards large unsearched areas of the problem. RRT* algorithm, unlike RRT, reduces the path cost by gradually refining the tree branches as more nodes are added.
 
 Please refer to the original paper on RRT* for more details: S. Karaman and E. Frazzoli, "Sampling-based algorithms for optimal motion planning," in International Journal of Robotics Research, vol. 30, no. 7, pp. 846-894, June 2011.
+
