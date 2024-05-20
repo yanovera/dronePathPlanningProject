@@ -39,3 +39,5 @@ The script uses the RRT* algorithm for pathfinding. RRT* is a graph-based planni
 
 Please refer to the original paper on RRT* for more details: S. Karaman and E. Frazzoli, "Sampling-based algorithms for optimal motion planning," in International Journal of Robotics Research, vol. 30, no. 7, pp. 846-894, June 2011.
 
+![alt text](dronePathPlanning.PNG)
+
