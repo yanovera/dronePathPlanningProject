@@ -32,7 +32,7 @@ The script allows for several parameters to be adjusted:
 - `TIME_PERIOD`: The time period between path updates
 
 ## 3D Visualization
-The script uses the `vispy` package to create a 3D visualization of the drone's flight path, the terrain, and the obstacles. The visualization shows the drone's current position, the target position, and the optimal path as determined by the RRT* algorithm. The terrain is rendered based on the height map, and the obstacles are shown as spheres with radii equal to their safety radii.
+The script uses the `vispy` package to create a 3D visualization of the drone's flight path, the terrain, and the obstacles. The visualization shows the drone's current position, the target position, and the optimal path as determined by the RRT* algorithm. The terrain is rendered based on the height map, and the obstacles are shown as spheres with radii equal to their visual radii.
 
 ## Algorithmic Background
 
