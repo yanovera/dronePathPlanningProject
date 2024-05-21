@@ -2,6 +2,7 @@ MAP_FILE = 'Europe - Paris.tif'
 X_MIN, X_MAX = 1, 220
 Y_MIN, Y_MAX = 0, 220
 MAP_HEIGHT_MARGIN = 1.5
+UPDATE_PERIOD = 200
 
 SEED = 111
 

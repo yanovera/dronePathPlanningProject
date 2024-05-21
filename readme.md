@@ -29,6 +29,7 @@ The script allows for several parameters to be adjusted:
 - `NUM_NODES`: The number of nodes for the RRT* algorithm to generate for pathfinding.
 - `NUMBER_OF_OBSTACLES`, `OBSTACLES_VISUAL_RADIUS`, `OBSTACLES_SAFETY_RADIUS`, `OBSTACLES_MIN_ALTITUDE`, `OBSTACLES_PENALTY_FACTOR`, `OBSTACLES_SPEED_FACTOR`: Parameters related to the obstacles in the map.
 - `DRONE_START`, `DRONE_TARGET`, `DRONE_SPEED_FACTOR`, `DRONE_STEERING_NOISE_SIGMA`, `TARGET_TOLERANCE`: Parameters related to the drone's start and target positions, speed, steering noise, and target tolerance.
+- `TIME_PERIOD`: The time period between path updates
 
 ## 3D Visualization
 The script uses the `vispy` package to create a 3D visualization of the drone's flight path, the terrain, and the obstacles. The visualization shows the drone's current position, the target position, and the optimal path as determined by the RRT* algorithm. The terrain is rendered based on the height map, and the obstacles are shown as spheres with radii equal to their safety radii.

@@ -55,9 +55,10 @@ def update(ev):
         - steering_noise_sigma: The standard deviation of the steering noise.
         - tolerance: The distance tolerance for reaching a waypoint or the target.
         - height_margin: The minimum altitude margin above the terrain.
+        - update_period: The time period between path updates
         """
     global path_scatter, path, t, height_map, max_altitude, drone_speed_factor, nodes, parents, costs, spheres, spheres_speed_factor, target, start,\
-        current_pos, current_point, timer, steering_noise_sigma, tolerance, height_margin
+        current_pos, current_point, timer, steering_noise_sigma, tolerance, height_margin, update_period
     t += 1.0
     if current_pos[2] < height_map[int(current_pos[0]), int(current_pos[1])] + height_margin:
         print(f'warning: drone is below height margin at t={t}.')
@@ -65,7 +66,7 @@ def update(ev):
             [current_pos[0], current_pos[1], height_map[int(current_pos[0]), int(current_pos[1])] + height_margin])
     else:
         fixed_current_pos = current_pos
-    if t % 200 == 1:
+    if t % update_period == 1:
         for sphere in spheres:
             sphere.destination = sample_point(height_map, max_altitude, min_altitude=sphere.min_altitude)
         nodes, parents, costs = generate_rrt_star(height_map, max_altitude, num_nodes, fixed_current_pos, spheres, target, height_margin)
@@ -191,6 +192,8 @@ dataset.close()
 
 max_altitude = MAX_ALTITUDE  # set maximum altitude
 num_nodes = NUM_NODES  # set resolution
+
+update_period = UPDATE_PERIOD
 
 np.random.seed(SEED)
 
